@@ -6,6 +6,7 @@ namespace RedeSocial.DataBase;
 public class DB : DbContext
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<Post> Posts { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Configurando o Entity baseado no arquivo de configuração do projeto

@@ -89,7 +89,6 @@ public class User
         // Compara e retorna
         return Enumerable.SequenceEqual<byte>(hash_db, hash_cmp);
 
-
     }
 
 }

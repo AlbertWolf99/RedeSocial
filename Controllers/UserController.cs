@@ -1,9 +1,6 @@
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using RedeSocial.DataBase;
 using RedeSocial.Models.User;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -32,16 +29,21 @@ public class UserController : BaseController
         User? user = DataBase.User.FindUserByName(userName);
         if(user == null)
         {
+            ret.Status = UserDataReturnStatus.UserNotFound;
+            ret.StatusName = ret.Status.ToString();
             ret.Found = false;
             return ret;
         }
+        ret.Status = UserDataReturnStatus.FoundUser;
         ret.Found = true;
         ret.UserName = user.UserName;
         ret.BirthDay = user.BirthDay;
         if(CurrentUser()?.UserName == user.UserName)
         {
+            ret.Status = UserDataReturnStatus.CurrentUser;
             ret.Email = user.Email;
         }
+        ret.StatusName = ret.Status.ToString();
         return ret;
     }
 
@@ -52,21 +54,25 @@ public class UserController : BaseController
         User? user = CurrentUser();
         if (user == null)
         {
+            ret.Status = ChangePasswordReturnStatus.InvalidUser;
+            ret.StatusName = ret.Status.ToString();
             ret.ChangedPassword = false;
-            //TODO: Criar enum de status
+            return ret;
+        }
+
+        if (!user.ValidatePassword(req.OldPassword))
+        {
+            ret.Status = ChangePasswordReturnStatus.IncorrectPassword;
+            ret.StatusName = ret.Status.ToString();
+            ret.ChangedPassword = false;
             return ret;
         }
 
         if (!DataBase.User.MatchPasswordRequirements(req.NewPassword))
         {
+            ret.Status = ChangePasswordReturnStatus.PasswordDoesntMeetRequirements;
+            ret.StatusName = ret.Status.ToString();
             ret.ChangedPassword = false;
-            //TODO: Criar enum de status
-            return ret;
-        }
-        if (!user.ValidatePassword(req.OldPassword))
-        {
-            ret.ChangedPassword = false;
-            //TODO: Criar enum de status
             return ret;
         }
 
