@@ -3,7 +3,8 @@ namespace RedeSocial.Models.Post;
 public enum UserPostsReturnStatus
 {
     FoundPosts = 0,
-    NoPostsFound = 1
+    InvalidUser = 1,
+    NoPostsFound = 2
 }
 
 public class UserPostsReturn

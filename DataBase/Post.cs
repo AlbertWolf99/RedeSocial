@@ -48,14 +48,19 @@ public class Post
         return (from p in _db.Posts where p.PostId == postId select p).FirstOrDefault();
     }
 
-    public static List<Post>? FindPostsByUserName(string userName)
+    public static List<Post> FindAllPosts()
     {
-        return (from p in _db.Posts where p.UserUserName == userName select p).ToList();
+        return (from p in _db.Posts orderby p.PublishTime descending select p).ToList();
     }
 
-    public static List<Post>? FindPostsByTopic(string topic)
+    public static List<Post> FindPostsByUserName(string userName)
     {
-        return (from p in _db.Posts where p.Topic == topic select p).ToList();
+        return (from p in _db.Posts where p.UserUserName == userName orderby p.PublishTime descending select p).ToList();
+    }
+
+    public static List<Post> FindPostsByTopic(string topic)
+    {
+        return (from p in _db.Posts where p.Topic == topic orderby p.PublishTime descending select p).ToList();
     }
 
 }

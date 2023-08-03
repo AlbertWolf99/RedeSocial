@@ -21,7 +21,10 @@ public class PostController : BaseController
     [HttpPost("NewPost"), Authorize]
     public PublishPostReturn Post([FromBody] PublishPostRequest req)
     {
-        PublishPostReturn ret = new PublishPostReturn();
+        PublishPostReturn ret = new PublishPostReturn()
+        {
+            Text = req.Text
+        };
 
         if (req.Text.Length < 3 || req.Text.Length > 499)
         {
@@ -44,7 +47,6 @@ public class PostController : BaseController
         post.UserUserName = CurrentUser().UserName;
         post.Text = req.Text;
         post.Topic = req.Topic;
-        //TODO: Fix date getting 01/01/01
         post.PublishTime = DateTime.Now; 
 
         post.Insert();
@@ -93,10 +95,38 @@ public class PostController : BaseController
         return ret;
     }
 
-    [HttpGet("GetPosts/{userName}"), Authorize]
+    [HttpGet("GetPosts"), Authorize]
+    public AllPostsReturn GetAllPosts()
+    {
+        AllPostsReturn ret = new();
+        List<Post> posts = DataBase.Post.FindAllPosts();
+        if(!posts.Any())
+        {
+            ret.Status = AllPostsReturnStatus.NoPostsFound;
+            ret.StatusName = ret.Status.ToString();
+            ret.Found = false;
+            return ret;
+        }
+
+        ret.Status = AllPostsReturnStatus.FoundPosts;
+        ret.StatusName = ret.Status.ToString();
+        ret.Found = true;
+        ret.Posts = posts;
+        return ret;
+    }
+
+    [HttpGet("GetUserPosts/{userName}"), Authorize]
     public UserPostsReturn GetUserPosts(string userName)
     {
         UserPostsReturn ret = new();
+        if(!DataBase.User.ExistingUserName(userName))
+        {
+            ret.Status = UserPostsReturnStatus.InvalidUser;
+            ret.StatusName = ret.Status.ToString();
+            ret.Found = false;
+            return ret;
+        }
+
         List<Post> posts = DataBase.Post.FindPostsByUserName(userName);
         if(!posts.Any())
         {
@@ -114,20 +144,28 @@ public class PostController : BaseController
         return ret;
     }
 
-    [HttpGet("GetPosts/{topic}"), Authorize]
-    public UserPostsReturn GetPostsByTopic(string topic)
+    [HttpGet("GetTopicPosts/{topic}"), Authorize]
+    public TopicPostsReturn GetPostsByTopic(string topic)
     {
-        UserPostsReturn ret = new();
-        List<Post> posts = DataBase.Post.FindPostsByTopic(topic);
-        if(!posts.Any())
+        TopicPostsReturn ret = new();
+        if(!DataBase.Post.IsValidTopic(topic))
         {
-            ret.Status = UserPostsReturnStatus.NoPostsFound;
+            ret.Status = TopicPostsReturnStatus.InvalidTopic;
             ret.StatusName = ret.Status.ToString();
             ret.Found = false;
             return ret;
         }
 
-        ret.Status = UserPostsReturnStatus.FoundPosts;
+        List<Post> posts = DataBase.Post.FindPostsByTopic(topic);
+        if(!posts.Any())
+        {
+            ret.Status = TopicPostsReturnStatus.NoPostsFound;
+            ret.StatusName = ret.Status.ToString();
+            ret.Found = false;
+            return ret;
+        }
+
+        ret.Status = TopicPostsReturnStatus.FoundPosts;
         ret.StatusName = ret.Status.ToString();
         ret.Found = true;
         ret.Posts = posts;

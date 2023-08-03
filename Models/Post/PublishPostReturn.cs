@@ -14,5 +14,4 @@ public class PublishPostReturn
     public PublishPostStatus Status { get; set; } = PublishPostStatus.ServiceInMaintence;
     public string StatusName { get; set; } = PublishPostStatus.ServiceInMaintence.ToString();
     public string Text { get; set; } = "";
-    public DateTime PublishTime { get; set; }   
 }
