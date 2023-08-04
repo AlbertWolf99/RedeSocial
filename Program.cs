@@ -1,8 +1,8 @@
-
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "RedeSocial", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo 
+    { 
+        Title = "RedeSocial", 
+        Version = "v1",
+        Description = "API de uma Rede Social simplificada desenvolvida para o Processo Seletivo da empresa Ploomes" 
+    });
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() 
     { 
         Name = "Authorization", 
@@ -21,11 +27,11 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer", 
         BearerFormat = "JWT", 
         In = ParameterLocation.Header, 
-        Description = @"JWT Authorization header using the Bearer scheme.
+        Description = @" Cabecalho de autorizacao JWT usando o esquema Bearer.
         
-        Enter 'Bearer' [space] and then your token in the text input below.
+        Digite 'Bearer' [Espaco] seguido de seu token no input de texto abaixo.
         
-        Example: ""Bearer 12345abcdef""", 
+        Exemplo: ""Bearer 12345abcdef""", 
     }); 
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement 
@@ -42,6 +48,9 @@ builder.Services.AddSwaggerGen(c =>
             new string[] {} 
         } 
     }); 
+
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 

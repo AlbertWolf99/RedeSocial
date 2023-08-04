@@ -18,6 +18,9 @@ public class RegisterController : BaseController
         _logger = logger;
     }
 
+    /// <summary>
+    /// Cadastra um novo usuario
+    /// </summary>
     [HttpPost(Name = "NewUser")]
     public RegisterReturn Post([FromBody]RegisterRequest req)
     {

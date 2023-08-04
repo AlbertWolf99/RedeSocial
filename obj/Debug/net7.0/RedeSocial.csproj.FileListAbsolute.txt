@@ -100,3 +100,5 @@ C:\Users\alber\Documents\RedeSocial\bin\Debug\net7.0\OpenIddict.Validation.Serve
 C:\Users\alber\Documents\RedeSocial\bin\Debug\net7.0\OpenIddict.Validation.SystemNetHttp.dll
 C:\Users\alber\Documents\RedeSocial\bin\Debug\net7.0\Polly.dll
 C:\Users\alber\Documents\RedeSocial\bin\Debug\net7.0\Polly.Extensions.Http.dll
+C:\Users\alber\Documents\RedeSocial\bin\Debug\net7.0\RedeSocial.xml
+C:\Users\alber\Documents\RedeSocial\obj\Debug\net7.0\RedeSocial.xml

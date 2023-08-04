@@ -18,6 +18,9 @@ public class PostController : BaseController
         _config = config;
     }
 
+    /// <summary>
+    /// Publica um novo post do usuario logado
+    /// </summary>
     [HttpPost("NewPost"), Authorize]
     public PublishPostReturn Post([FromBody] PublishPostRequest req)
     {
@@ -58,6 +61,9 @@ public class PostController : BaseController
         return ret;
     }
 
+    /// <summary>
+    /// Altera o texto de um post do usuario logado
+    /// </summary>
     [HttpPost("EditPost"), Authorize]
     public EditPostReturn Post([FromBody] EditPostRequest req)
     {
@@ -95,6 +101,9 @@ public class PostController : BaseController
         return ret;
     }
 
+    /// <summary>
+    /// Busca todos os posts
+    /// </summary>
     [HttpGet("GetPosts"), Authorize]
     public AllPostsReturn GetAllPosts()
     {
@@ -115,6 +124,9 @@ public class PostController : BaseController
         return ret;
     }
 
+    /// <summary>
+    /// Busca os posts de um determinado usuario
+    /// </summary>
     [HttpGet("GetUserPosts/{userName}"), Authorize]
     public UserPostsReturn GetUserPosts(string userName)
     {
@@ -144,6 +156,9 @@ public class PostController : BaseController
         return ret;
     }
 
+    /// <summary>
+    /// Busca os posts de um determinado tema
+    /// </summary>
     [HttpGet("GetTopicPosts/{topic}"), Authorize]
     public TopicPostsReturn GetPostsByTopic(string topic)
     {

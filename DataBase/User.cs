@@ -31,27 +31,67 @@ public class User
         _db.SaveChanges();
     }
 
+    /// <summary>
+    /// Verifica se o nome de usuario ja existe.
+    /// </summary>
+    /// <param name="userName"> nome de usuario a ser verificado </param>
+    /// <returns>
+    /// True caso o nome ja exista, False caso contrario.
+    /// </returns>
     public static bool ExistingUserName(string userName)
     {
         return (from u in _db.Users where u.UserName.ToLower() == userName.ToLower() select u).Any();
     }
 
+    /// <summary>
+    /// Gera o sal para a criptografia da senha.
+    /// </summary>
+    /// <returns>
+    /// Um array de bytes aleatórios.
+    /// </returns>
     public static byte[] GenerateSalt()
     {        
         byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
         return salt;
     }
 
+    /// <summary>
+    /// Verifica se a senha segue os requisitos necessarios:
+    /// - pelo menos 8 caracteres
+    /// - uma letra minuscula
+    /// - uma letra maiuscula
+    /// - um numero
+    /// - um caractere especial
+    /// </summary>
+    /// <param name="password"> senha a ser verificada. </param>
+    /// <returns>
+    /// True caso a senha siga os requisitos, False caso contrario.
+    /// </returns>
     public static bool MatchPasswordRequirements(string password)
     {    
         return Regex.IsMatch(password, "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})");
     }
 
+    /// <summary>
+    /// Busca um usuario pelo seu nome de usuario.
+    /// </summary>
+    /// <param name="userName"> nome de usuario a ser buscado. </param>
+    /// <returns>
+    /// O usuario se encontrado, null caso contrario.
+    /// </returns>
     public static User? FindUserByName(string userName)
     {
         return (from u in _db.Users where u.UserName.ToLower() == userName.ToLower() select u).FirstOrDefault();
     }
 
+    /// <summary>
+    /// Autentica o login de um usuario
+    /// </summary>
+    /// <param name="userName"> nome do usuario tentando fazer login. </param>
+    /// <param name="password"> senha do usuario tentando fazer login. </param>
+    /// <returns>
+    /// True caso o conjunta usuario e senha estejam corretos, False caso contrario.
+    /// </returns>
     public static bool Authenticate(string userName, string password)
     {
         var query = from u in _db.Users where u.UserName.ToLower() == userName.ToLower() select u;
@@ -62,6 +102,14 @@ public class User
         return false;
     }
 
+    /// <summary>
+    /// Aplica criptografia Hash a senha fornecida
+    /// </summary>
+    /// <param name="salt"> conjunto de bytes a ser usado para a criptografia. </param>
+    /// <param name="password"> senha a ser criptografada. </param>
+    /// <returns>
+    /// Array de bytes criados a partir da criptografia da senha
+    /// </returns>
     public byte[] HashPassword(byte[] salt, string password)
     {
         
@@ -74,6 +122,13 @@ public class User
         return ret.ToArray();
     }
 
+    /// <summary>
+    /// Verifica se a senha fornecida é igual a senha cadastrada do usuario.
+    /// </summary>
+    /// <param name="password"> senha a ser comparada. </param>
+    /// <returns>
+    /// True se a senha for igual a cadastrada, False caso contrario.
+    /// </returns>
     public bool ValidatePassword(string password)
     {
         // Dados para comparativo

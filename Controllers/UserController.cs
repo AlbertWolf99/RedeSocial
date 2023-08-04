@@ -22,65 +22,9 @@ public class UserController : BaseController
         _config = config;
     }
 
-    [HttpGet("Get/{userName}"), Authorize]
-    public UserDataReturn GetUserData(string userName)
-    {
-        UserDataReturn ret = new ();
-        User? user = DataBase.User.FindUserByName(userName);
-        if(user == null)
-        {
-            ret.Status = UserDataReturnStatus.UserNotFound;
-            ret.StatusName = ret.Status.ToString();
-            ret.Found = false;
-            return ret;
-        }
-        ret.Status = UserDataReturnStatus.FoundUser;
-        ret.Found = true;
-        ret.UserName = user.UserName;
-        ret.BirthDay = user.BirthDay;
-        if(CurrentUser()?.UserName == user.UserName)
-        {
-            ret.Status = UserDataReturnStatus.CurrentUser;
-            ret.Email = user.Email;
-        }
-        ret.StatusName = ret.Status.ToString();
-        return ret;
-    }
-
-    [HttpPost("ChangePassword"), Authorize]
-    public ChangePasswordReturn PostChangePassword([FromBody]ChangePasswordRequest req)
-    {
-        ChangePasswordReturn ret = new();
-        User? user = CurrentUser();
-        if (user == null)
-        {
-            ret.Status = ChangePasswordReturnStatus.InvalidUser;
-            ret.StatusName = ret.Status.ToString();
-            ret.ChangedPassword = false;
-            return ret;
-        }
-
-        if (!user.ValidatePassword(req.OldPassword))
-        {
-            ret.Status = ChangePasswordReturnStatus.IncorrectPassword;
-            ret.StatusName = ret.Status.ToString();
-            ret.ChangedPassword = false;
-            return ret;
-        }
-
-        if (!DataBase.User.MatchPasswordRequirements(req.NewPassword))
-        {
-            ret.Status = ChangePasswordReturnStatus.PasswordDoesntMeetRequirements;
-            ret.StatusName = ret.Status.ToString();
-            ret.ChangedPassword = false;
-            return ret;
-        }
-
-        user.Password = user.HashPassword(DataBase.User.GenerateSalt(), req.NewPassword);
-        user.Update();
-        return ret;
-    }
-
+    /// <summary>
+    /// Realiza o login de um usuario e retorna um token de autenticação
+    /// </summary>
     [HttpPost("Login")]
     public LoginReturn PostLogin([FromBody]LoginRequest req)
     {
@@ -128,6 +72,71 @@ public class UserController : BaseController
             ret.StatusName = ret.Status.ToString();
         }
 
+        return ret;
+    }
+
+    /// <summary>
+    /// Busca os dados de um usuario
+    /// </summary>
+    [HttpGet("Get/{userName}"), Authorize]
+    public UserDataReturn GetUserData(string userName)
+    {
+        UserDataReturn ret = new ();
+        User? user = DataBase.User.FindUserByName(userName);
+        if(user == null)
+        {
+            ret.Status = UserDataReturnStatus.UserNotFound;
+            ret.StatusName = ret.Status.ToString();
+            ret.Found = false;
+            return ret;
+        }
+        ret.Status = UserDataReturnStatus.FoundUser;
+        ret.Found = true;
+        ret.UserName = user.UserName;
+        ret.BirthDay = user.BirthDay;
+        if(CurrentUser()?.UserName == user.UserName)
+        {
+            ret.Status = UserDataReturnStatus.CurrentUser;
+            ret.Email = user.Email;
+        }
+        ret.StatusName = ret.Status.ToString();
+        return ret;
+    }
+
+    /// <summary>
+    /// Altera a senha do usuario logado
+    /// </summary>
+    [HttpPost("ChangePassword"), Authorize]
+    public ChangePasswordReturn PostChangePassword([FromBody]ChangePasswordRequest req)
+    {
+        ChangePasswordReturn ret = new();
+        User? user = CurrentUser();
+        if (user == null)
+        {
+            ret.Status = ChangePasswordReturnStatus.InvalidUser;
+            ret.StatusName = ret.Status.ToString();
+            ret.ChangedPassword = false;
+            return ret;
+        }
+
+        if (!user.ValidatePassword(req.OldPassword))
+        {
+            ret.Status = ChangePasswordReturnStatus.IncorrectPassword;
+            ret.StatusName = ret.Status.ToString();
+            ret.ChangedPassword = false;
+            return ret;
+        }
+
+        if (!DataBase.User.MatchPasswordRequirements(req.NewPassword))
+        {
+            ret.Status = ChangePasswordReturnStatus.PasswordDoesntMeetRequirements;
+            ret.StatusName = ret.Status.ToString();
+            ret.ChangedPassword = false;
+            return ret;
+        }
+
+        user.Password = user.HashPassword(DataBase.User.GenerateSalt(), req.NewPassword);
+        user.Update();
         return ret;
     }
 }

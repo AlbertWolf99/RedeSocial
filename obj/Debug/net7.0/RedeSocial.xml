@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RedeSocial</name>
+    </assembly>
+    <members>
+        <member name="M:RedeSocial.Controllers.BaseController.CurrentUser">
+            <summary>
+            Busca pelo usuario logado atualmente
+            </summary>
+            <returns>
+            O usuario logado atualmente ou null caso não exista
+            </returns>
+        </member>
+        <member name="M:RedeSocial.Controllers.BaseController.Logged">
+            <summary>
+            Checa se o usuario esta logado
+            </summary>
+            <returns>
+            True se o usuario estiver logado, False caso contrario
+            </returns>
+        </member>
+        <member name="M:RedeSocial.Controllers.PostController.Post(RedeSocial.Models.Post.PublishPostRequest)">
+            <summary>
+            Publica um novo post do usuario logado
+            </summary>
+        </member>
+        <member name="M:RedeSocial.Controllers.PostController.Post(RedeSocial.Models.Post.EditPostRequest)">
+            <summary>
+            Altera o texto de um post do usuario logado
+            </summary>
+        </member>
+        <member name="M:RedeSocial.Controllers.PostController.GetAllPosts">
+            <summary>
+            Busca todos os posts
+            </summary>
+        </member>
+        <member name="M:RedeSocial.Controllers.PostController.GetUserPosts(System.String)">
+            <summary>
+            Busca os posts de um determinado usuario
+            </summary>
+        </member>
+        <member name="M:RedeSocial.Controllers.PostController.GetPostsByTopic(System.String)">
+            <summary>
+            Busca os posts de um determinado tema
+            </summary>
+        </member>
+        <member name="M:RedeSocial.Controllers.RegisterController.Post(RedeSocial.Models.Register.RegisterRequest)">
+            <summary>
+            Cadastra um novo usuario
+            </summary>
+        </member>
+        <member name="M:RedeSocial.Controllers.UserController.PostLogin(RedeSocial.Models.User.LoginRequest)">
+            <summary>
+            Realiza o login de um usuario e retorna um token de autenticação
+            </summary>
+        </member>
+        <member name="M:RedeSocial.Controllers.UserController.GetUserData(System.String)">
+            <summary>
+            Busca os dados de um usuario
+            </summary>
+        </member>
+        <member name="M:RedeSocial.Controllers.UserController.PostChangePassword(RedeSocial.Models.User.ChangePasswordRequest)">
+            <summary>
+            Altera a senha do usuario logado
+            </summary>
+        </member>
+        <member name="M:RedeSocial.DataBase.Post.IsValidTopic(System.String)">
+            <summary>
+            Verifica se o tema pertence aos possiveis temas de Post.
+            </summary>
+            <param name="topic"> nome do tema a ser verificado. </param>
+            <returns>
+            True se o tema for encontrado, False caso contrario.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.Post.FindPostById(System.Int64)">
+            <summary>
+            Busca o post com o Id especificado.
+            </summary>
+            <param name="postId"> id do post a ser buscado. </param>
+            <returns>
+            O post com o id passado, ou null caso não exista.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.Post.FindAllPosts">
+            <summary>
+            Busca todos os posts existentes.
+            </summary>
+            <returns>
+            Uma lista com todos os posts existentes.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.Post.FindPostsByUserName(System.String)">
+            <summary>
+            Busca todos os posts de um determinado usuario.
+            </summary>
+            <param name="userName"> nome de usuario de quem publicou os posts a serem buscados. </param>
+            <returns>
+            Uma lista com todos os posts do usuario especificado.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.Post.FindPostsByTopic(System.String)">
+            <summary>
+            Busca todos os posts de um determinado tema.
+            </summary>
+            <param name="topic"> tema dos posts a serem buscados. </param>
+            <returns>
+            Uma lista com todos os posts do tema especificado.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.User.ExistingUserName(System.String)">
+            <summary>
+            Verifica se o nome de usuario ja existe.
+            </summary>
+            <param name="userName"> nome de usuario a ser verificado </param>
+            <returns>
+            True caso o nome ja exista, False caso contrario.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.User.GenerateSalt">
+            <summary>
+            Gera o sal para a criptografia da senha.
+            </summary>
+            <returns>
+            Um array de bytes aleatórios.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.User.MatchPasswordRequirements(System.String)">
+            <summary>
+            Verifica se a senha segue os requisitos necessarios:
+            - pelo menos 8 caracteres
+            - uma letra minuscula
+            - uma letra maiuscula
+            - um numero
+            - um caractere especial
+            </summary>
+            <param name="password"> senha a ser verificada. </param>
+            <returns>
+            True caso a senha siga os requisitos, False caso contrario.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.User.FindUserByName(System.String)">
+            <summary>
+            Busca um usuario pelo seu nome de usuario.
+            </summary>
+            <param name="userName"> nome de usuario a ser buscado. </param>
+            <returns>
+            O usuario se encontrado, null caso contrario.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.User.Authenticate(System.String,System.String)">
+            <summary>
+            Autentica o login de um usuario
+            </summary>
+            <param name="userName"> nome do usuario tentando fazer login. </param>
+            <param name="password"> senha do usuario tentando fazer login. </param>
+            <returns>
+            True caso o conjunta usuario e senha estejam corretos, False caso contrario.
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.User.HashPassword(System.Byte[],System.String)">
+            <summary>
+            Aplica criptografia Hash a senha fornecida
+            </summary>
+            <param name="salt"> conjunto de bytes a ser usado para a criptografia. </param>
+            <param name="password"> senha a ser criptografada. </param>
+            <returns>
+            Array de bytes criados a partir da criptografia da senha
+            </returns>
+        </member>
+        <member name="M:RedeSocial.DataBase.User.ValidatePassword(System.String)">
+            <summary>
+            Verifica se a senha fornecida é igual a senha cadastrada do usuario.
+            </summary>
+            <param name="password"> senha a ser comparada. </param>
+            <returns>
+            True se a senha for igual a cadastrada, False caso contrario.
+            </returns>
+        </member>
+    </members>
+</doc>
