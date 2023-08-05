@@ -31,7 +31,11 @@ builder.Services.AddSwaggerGen(c =>
         
         Digite 'Bearer' [Espaco] seguido de seu token no input de texto abaixo.
         
-        Exemplo: ""Bearer 12345abcdef""", 
+        Exemplo: ""Bearer 12345abcdef""
+        
+        Para pegar esse token, é necessário chamar a APi de Login (/User/Login)"
+        
+        , 
     }); 
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement 
