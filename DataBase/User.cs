@@ -108,9 +108,9 @@ public class User
     /// <param name="salt"> conjunto de bytes a ser usado para a criptografia. </param>
     /// <param name="password"> senha a ser criptografada. </param>
     /// <returns>
-    /// Array de bytes criados a partir da criptografia da senha
+    /// Array de bytes criados a partir da criptografia da senha.
     /// </returns>
-    public byte[] HashPassword(byte[] salt, string password)
+    public static byte[] HashPassword(byte[] salt, string password)
     {
         
         List<byte> ret = new List<byte>();

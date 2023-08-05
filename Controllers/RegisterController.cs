@@ -69,7 +69,7 @@ public class RegisterController : BaseController
         user.UserName = req.UserName.ToLower();
         user.BirthDay = req.Birthday;
         user.Email = req.Email.ToLower();
-        user.Password = user.HashPassword(salt, req.Password);
+        user.Password = DataBase.User.HashPassword(salt, req.Password);
 
         user.Insert();
         

@@ -135,7 +135,7 @@ public class UserController : BaseController
             return ret;
         }
 
-        user.Password = user.HashPassword(DataBase.User.GenerateSalt(), req.NewPassword);
+        user.Password = DataBase.User.HashPassword(DataBase.User.GenerateSalt(), req.NewPassword);
         user.Update();
         return ret;
     }

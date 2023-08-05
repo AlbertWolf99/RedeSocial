@@ -166,7 +166,7 @@
             <param name="salt"> conjunto de bytes a ser usado para a criptografia. </param>
             <param name="password"> senha a ser criptografada. </param>
             <returns>
-            Array de bytes criados a partir da criptografia da senha
+            Array de bytes criados a partir da criptografia da senha.
             </returns>
         </member>
         <member name="M:RedeSocial.DataBase.User.ValidatePassword(System.String)">
@@ -177,6 +177,30 @@
             <returns>
             True se a senha for igual a cadastrada, False caso contrario.
             </returns>
+        </member>
+        <member name="T:RedeSocial.Migrations.Initial">
+            <inheritdoc />
+        </member>
+        <member name="M:RedeSocial.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:RedeSocial.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:RedeSocial.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:RedeSocial.Migrations.InsertSample">
+            <inheritdoc />
+        </member>
+        <member name="M:RedeSocial.Migrations.InsertSample.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:RedeSocial.Migrations.InsertSample.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:RedeSocial.Migrations.InsertSample.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
         </member>
     </members>
 </doc>

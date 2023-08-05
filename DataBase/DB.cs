@@ -9,13 +9,14 @@ public class DB : DbContext
     public DbSet<Post> Posts { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        
         // Configurando o Entity baseado no arquivo de configuração do projeto
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
 
-        var connectionString = configuration.GetConnectionString("RedeSocialDb");
+        var connectionString = configuration.GetConnectionString("RedeSocialDb").Replace("|DataDirectory|", AppDomain.CurrentDomain.BaseDirectory);
         optionsBuilder.UseSqlServer(connectionString);
     }
 }
